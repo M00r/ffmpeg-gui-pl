@@ -5,7 +5,7 @@ Nakładka GUI do programu FFmpeg, ułatwiająca obsługę popularnych operacji w
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![PyQt5 Version](https://img.shields.io/badge/PyQt5->=5.15-blue.svg)]()
-[![Download .exe Version](https://drive.google.com/file/d/1M5WcGSA0SUaSZJVdNy2eOJf8dW5MywMq/view?usp=sharing)]()
+[Pobierz wersję .exe](https://drive.google.com/file/d/1M5WcGSA0SUaSZJVdNy2eOJf8dW5MywMq/view?usp=sharing)
 ## Opis 📝
 
 FFmpeg GUI PL to przyjazna dla użytkownika nakładka graficzna na potężne narzędzie FFmpeg. Została stworzona z myślą o polskich użytkownikach, oferując intuicyjny interfejs do wykonywania złożonych operacji na plikach multimedialnych bez konieczności pisania skomplikowanych poleceń w konsoli.
