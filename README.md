@@ -1,435 +1,303 @@
-Instrukcja obsługi — FFmpeg GUI PL
-Poniżej znajdziesz kompletny przewodnik po programie: od instalacji, przez konfigurację, po każdą funkcję z przykładami.
+# FFmpeg GUI PL 💻
 
-1. Wymagania wstępne
+Nakładka GUI do programu FFmpeg, ułatwiająca obsługę popularnych operacji wideo i audio.
 
-1.1 Python
-Program wymaga Pythona 3.10 lub nowszego. Sprawdź wersję:
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
+[![PyQt5 Version](https://img.shields.io/badge/PyQt5->=5.15-blue.svg)]()
 
-powershell
-python --version
+## Opis 📝
 
-1.2 Zależności Pythona
-W katalogu projektu zainstaluj biblioteki:
+FFmpeg GUI PL to przyjazna dla użytkownika nakładka graficzna na potężne narzędzie FFmpeg. Została stworzona z myślą o polskich użytkownikach, oferując intuicyjny interfejs do wykonywania złożonych operacji na plikach multimedialnych bez konieczności pisania skomplikowanych poleceń w konsoli.
 
-powershell
-pip install PyQt5
+Aplikacja umożliwia między innymi:
 
-1.3 FFmpeg
-Program nie zawiera FFmpeg — musi być zainstalowany osobno.
+*   Konwersję formatów wideo i audio.
+*   Wyodrębnianie klatek wideo (I, P, B, według interwału, zakresu czasu).
+*   Wizualizację parametrów kodowania (wektory ruchu, QP).
+*   Przetwarzanie wsadowe wielu plików jednocześnie.
+*   Zarządzanie kolejką zadań z możliwością pauzy i stopu.
+*   Edycję własnych poleceń FFmpeg.
+*   Automatyczną aktualizację z weryfikacją sum kontrolnych.
+*   Obsługę motywów (jasny/ciemny) i profili konfiguracyjnych.
 
-Windows:
-Pobierz z gyan.dev wersję „release full".
-Rozpakuj np. do C:\ffmpeg\.
-Dodaj C:\ffmpeg\bin do zmiennej PATH, albo wskaż ścieżkę w Ustawieniach programu.
+## Spis Treści 🧭
 
-Sprawdzenie:
+*   [Opis](#opis)
+*   [Kluczowe Funkcje](#kluczowe-funkcje--)
+*   [Wymagania](#wymagania--)
+*   [Instalacja](#instalacja--)
+*   [Uruchomienie](#uruchomienie-▶️)
+*   [Konfiguracja](#konfiguracja--)
+*   [Interfejs Użytkownika](#interfejs-uzytkownika-🎨)
+*   [Przykładowe Scenariusze Użycia](#przykładowe-scenariusze-użycia-💡)
+*   [Rozwiązywanie Problemów](#rozwiązywanie-problemów--)
+*   [Skróty Klawiszowe](#skróty-klawiszowe-⌨️)
+*   [Struktura Projektu](#struktura-projektu-📁)
+*   [Informacje o Danych](#informacje-o-danych-💾)
+*   [Najlepsze Praktyki](#najlepsze-praktyki--)
 
-powershell
-ffmpeg -version
-ffprobe -version
-ffplay -version
-Każde z tych poleceń powinno wypisać wersję. Jeśli któreś nie działa, program też go nie znajdzie.
+## Kluczowe Funkcje 🚀
 
-2. Uruchomienie programu
-W katalogu projektu:
+*   **Konwersja Formatów:** Obsługa wielu popularnych kontenerów i kodeków wideo/audio z możliwością wyboru jakości i parametrów kompresji.
+*   **Ekstrakcja Klatek:** Precyzyjne wyodrębnianie klatek według typu (I, P, B), interwału czasowego lub liczby klatek, a także pojedynczych klatek.
+*   **Analiza Wideo:** Wizualizacja wektorów ruchu oraz wartości QP (Quality Parameter) dla lepszego zrozumienia procesu kodowania.
+*   **Edytor Poleceń:** Swobodne tworzenie i wykonywanie własnych poleceń FFmpeg z pomocą wbudowanych szablonów i podpowiedzi.
+*   **Przetwarzanie Wsadowe:** Możliwość wykonania tej samej operacji na wielu plikach jednocześnie, z zarządzaniem w kolejce zadań.
+*   **Kolejka Zadań:** Zaawansowane zarządzanie zadaniami z opcjami startu, pauzy, wznowienia i stopu, umożliwiające sekwencyjne przetwarzanie.
+*   **Automatyczne Aktualizacje:** Funkcja sprawdzania i pobierania nowych wersji bezpośrednio z repozytorium GitHub, z weryfikacją sum kontrolnych SHA-256.
+*   **Profile Ustawień:** Zapisywanie i wczytywanie konfiguracji programu (ścieżki, motyw, kanał aktualizacji) dla łatwego przełączania między różnymi środowiskami pracy.
+*   **Wtyczki i Presety:** Możliwość dodawania własnych, niestandardowych operacji do drzewka funkcji programu.
+*   **Motywy:** Dostępne dwa motywy interfejsu: jasny i ciemny, dla komfortu pracy w różnych warunkach oświetleniowych.
 
-powershell
+## Wymagania ⚙️
+
+*   **Python:** Wersja 3.10 lub nowsza.
+*   **FFmpeg:** Program FFmpeg musi być zainstalowany osobno i dostępny w systemowej zmiennej PATH lub skonfigurowany w ustawieniach programu.
+*   **PyQt5:** Biblioteka interfejsu graficznego dla Pythona.
+
+## Instalacja 📦
+
+1.  **Sklonuj repozytorium:**
+    ```bash
+    git clone https://github.com/M00r/ffmpeg-gui-pl.git
+    cd ffmpeg-gui-pl
+    ```
+
+2.  **Zainstaluj zależności Pythona:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    lub
+    ```bash
+    pip install PyQt5>=5.15 pyinstaller>=6.0
+    ```
+
+3.  **Zainstaluj FFmpeg:**
+    *   **Windows:** Pobierz wersję „release full” z [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) (np. do `C:\ffmpeg\`). Dodaj `C:\ffmpeg\bin` do zmiennej środowiskowej PATH.
+    *   **Linux:** Użyj menedżera pakietów, np. `sudo apt update && sudo apt install ffmpeg`.
+    *   **macOS:** Użyj Homebrew: `brew install ffmpeg`.
+
+4.  **Sprawdź instalację FFmpeg:**
+    Uruchom w terminalu:
+    ```bash
+    ffmpeg -version
+    ffprobe -version
+    ffplay -version
+    ```
+    Każde polecenie powinno zwrócić informacje o wersji narzędzia.
+
+## Uruchomienie ▶️
+
+W katalogu głównym projektu uruchom skrypt `main.py`:
+
+```bash
 python main.py
-Otworzy się główne okno z:
+```
 
-menu na górze (Plik, Narzędzia, Widok, Profile, Pomoc),
+## Konfiguracja ⚙️
 
-drzewkiem funkcji po lewej,
+Po pierwszym uruchomieniu programu, jego konfiguracja jest zapisywana w katalogu `~/.ffmpeg_gui_pl/`.
 
-zakładkami po prawej: Log, Podgląd klatek, Kolejka zadań,
+### Ustawienia Narzędzi FFmpeg 🛠️
 
-paskiem postępu na dole,
+Przejdź do `Plik -> Ustawienia` (skrót `Ctrl+,`), aby skonfigurować ścieżki do wykonywalnych plików FFmpeg, ffprobe i ffplay, jeśli nie znajdują się one w systemowej zmiennej PATH.
 
-paskiem statusu ze ścieżkami do ffmpeg/ffprobe/ffplay i wersją.
+*   **Ścieżka do ffmpeg:** Np. `C:\ffmpeg\bin\ffmpeg.exe` lub `/usr/bin/ffmpeg`.
+*   **Ścieżka do ffprobe:** Np. `C:\ffmpeg\bin\ffprobe.exe` lub `/usr/bin/ffprobe`.
+*   **Ścieżka do ffplay:** Np. `C:\ffmpeg\bin\ffplay.exe` lub `/usr/bin/ffplay`.
 
+### Motyw Interfejsu 🎨
 
-3. Pierwsza konfiguracja
-3.1 Plik → Ustawienia
-Otwórz Plik → Ustawienia (skrót Ctrl+,) i sprawdź:
+Można przełączyć się między jasnym a ciemnym motywem poprzez menu `Widok -> Motyw jasny` lub `Widok -> Motyw ciemny`.
 
-Pole	Co wpisać
-Ścieżka do ffmpeg	np. C:\ffmpeg\bin\ffmpeg.exe
-Ścieżka do ffprobe	np. C:\ffmpeg\bin\ffprobe.exe
-Ścieżka do ffplay	np. C:\ffmpeg\bin\ffplay.exe
-Motyw	light (jasny) lub dark (ciemny)
-Kanał aktualizacji	stable — dla zwykłego użytkowania
-Sprawdzaj aktualizacje przy starcie	zaznaczone
-Weryfikuj SHA-256 pobranej aktualizacji	zalecane
-Generuj sumy SHA-256 po operacji	opcjonalne
-Potwierdzaj nadpisanie plików	zalecane
-Kliknij OK. Pasek informacyjny u góry pokaże wykryte ścieżki.
+### Kanał Aktualizacji ⬆️
 
-3.2 Motyw
-Widok → Motyw jasny lub Widok → Motyw ciemny. Zmiana zapisuje się automatycznie.
+W ustawieniach można wybrać kanał aktualizacji: `stable` (stabilny) lub `beta` (wersje testowe).
 
-4. Interfejs — co gdzie jest
+### Profile Ustawień 👤
 
-┌─────────────────────────────────────────────────────────────┐
-│ Plik   Narzędzia   Widok   Profile   Pomoc                  │  ← menu
-├─────────────────────────────────────────────────────────────┤
-│ FFmpeg: ... | ffprobe: ... | Wersja: 1.0.0 | Konfig: ...    │  ← pasek info
-├──────────────────────┬──────────────────────────────────────┤
-│                      │  [Log] [Podgląd klatek] [Kolejka]    │
-│   Drzewko funkcji    │                                      │
-│   (kliknij 2×)       │  Treść zakładki                      │
-│                      │                                      │
-├──────────────────────┴──────────────────────────────────────┤
-│ [████████░░░░░░░░░░] 42.3%                                  │  ← postęp
-├─────────────────────────────────────────────────────────────┤
-│ Status: Przetwarzanie…                                      │
-└─────────────────────────────────────────────────────────────┘
-Jak uruchomić operację z drzewka: kliknij dwukrotnie na wybraną pozycję. Otworzy się okno dialogowe.
+Program pozwala na zapisywanie i wczytywanie zestawów ustawień (ścieżki, motyw, kanał aktualizacji) za pomocą menu `Profile`.
+
+## Interfejs Użytkownika 🎨
+
+Po uruchomieniu programu, interfejs składa się z następujących głównych elementów:
+
+*   **Menu Górne:** Zawiera opcje `Plik`, `Narzędzia`, `Widok`, `Profile`, `Pomoc`.
+*   **Pasek Informacyjny:** Wyświetla ścieżki do wykrytych narzędzi FFmpeg, wersję aplikacji i lokalizację konfiguracji.
+*   **Panel Główny (Splitter):** Dzieli okno na dwie sekcje:
+    *   **Drzewko Funkcji (lewa strona):** Hierarchiczna lista dostępnych operacji FFmpeg, podzielona na kategorie (Konwersja, Wyodrębnianie Klatek, Analiza, Narzędzia Dodatkowe, Wtyczki).
+    *   **Zakładki (prawa strona):**
+        *   **Log:** Wyświetla szczegółowe informacje o wykonywanych poleceniach FFmpeg, komunikatach i błędach.
+        *   **Podgląd klatek:** Prezentuje miniatury wygenerowanych obrazów, umożliwiając szybki przegląd.
+        *   **Kolejka zadań:** Zarządza zadaniami do przetworzenia wsadowego lub sekwencyjnego.
+*   **Pasek Postępu:** Wyświetla bieżący postęp wykonywanej operacji.
+*   **Pasek Statusu:** Informuje o aktualnym stanie aplikacji (np. „Gotowe”, „Przetwarzanie…”).
+
+## Jak Używać ❓
+
+1.  **Wybierz operację:** W drzewku funkcji po lewej stronie, znajdź interesującą Cię operację i kliknij ją dwukrotnie.
+2.  **Skonfiguruj parametry:** W otwartym oknie dialogowym ustaw wymagane parametry (pliki wejściowe, wyjściowe, kodeki, jakość, rozdzielczość itp.).
+3.  **Uruchom:** Kliknij przycisk „Uruchom” lub „Akceptuj”. Program wygeneruje odpowiednie polecenie FFmpeg i wykona je w tle.
+4.  **Monitoruj postęp:** Obserwuj pasek postępu oraz zakładkę `Log` i `Kolejka zadań`.
+
+## Przykładowe Scenariusze Użycia 💡
+
+### Scenariusz 1: Konwersja filmu do mniejszego pliku 📉
+
+1.  W drzewku funkcji wybierz `1. Konwersja formatów (kontenery) -> Konwertuj do .mp4`.
+2.  W oknie dialogowym dodaj plik wideo.
+3.  W sekcji "Jakość obrazu" wybierz `Niska (CRF 28)` oraz `1280x720` dla rozdzielczości.
+4.  Wskaż katalog docelowy i kliknij „Uruchom”.
+
+### Scenariusz 2: Wyodrębnienie klatek do analizy 🖼️
+
+1.  W drzewku funkcji wybierz `2. Wyodrębnianie i analiza klatek -> 2.1 Według typu klatki -> Wyodrębnij wszystkie klatki I`.
+2.  Jako format obrazu wybierz `PNG` (bezstratny).
+3.  Wskaż katalog docelowy i kliknij „Uruchom”.
+4.  Po zakończeniu, zakładka `Podgląd klatek` pokaże miniatury wyodrębnionych obrazów.
+
+### Scenariusz 3: Wizualizacja ruchu w kodowanym wideo ➡️⬆️⬇️
+
+1.  W drzewku funkcji wybierz `3. Analiza wektorów ruchu -> Wektory ruchu (codecview)`.
+2.  Zaznacz opcje `P-klatki: predykcja w przód (pf)`, `B-klatki: predykcja w przód (bf)` oraz `B-klatki: predykcja w tył (bb)`.
+3.  Wskaż plik wyjściowy (np. `analiza.mp4`) i kliknij „Uruchom”.
+4.  Otwórz wygenerowany plik w odtwarzaczu, aby zobaczyć wizualizację wektorów ruchu.
+
+### Scenariusz 4: Wiele plików - ta sama operacja 🗂️
+
+1.  Wybierz `Narzędzia -> Przetwarzanie wsadowe`.
+2.  Dodaj wiele plików do listy.
+3.  Wybierz operację (np. `Konwertuj do .mp4`).
+4.  Wskaż katalog docelowy i kliknij „Uruchom”.
+5.  Postęp operacji będzie widoczny w zakładce `Kolejka zadań`.
+
+### Scenariusz 5: Weryfikacja integralności nagrania 🔒
+
+1.  Aby wygenerować sumy kontrolne dla katalogu, wybierz `Narzędzia -> Oblicz SHA-256 dla katalogu…`.
+2.  Wskaż katalog z plikami.
+3.  Wyślij wygenerowany plik `checksums.sha256` wraz z plikami.
+4.  Odbiorca może zweryfikować integralność plików za pomocą `Narzędzia -> Zweryfikuj checksums.sha256…`.
+
+## Tech Stack 🛠️
+
+*   **Język:** Python
+*   **GUI Framework:** PyQt5
+*   **Narzędzie główne:** FFmpeg
+*   **Dodatkowe narzędzia:** ffprobe, ffplay
 
-5. Funkcje — instrukcje krok po kroku
+## Struktura Projektu 📁
 
-5.1 Konwersja formatów
-Cel: zmienić kontener lub kodek pliku.
-
-W drzewku rozwiń 1. Konwersja formatów.
-
-Kliknij dwukrotnie np. Konwertuj do .mp4.
-
-W oknie:
-
-Dodaj pliki… — możesz wybrać wiele plików na raz (tryb wsadowy).
-
-Kodek wideo / audio — zostaw domyślne dla danego formatu albo zmień.
-
-Bitrate audio — np. 192 kbps.
-
-Preset jakości — np. „Wysoka (CRF 18)".
-
-Rozdzielczość — np. 1280x720 albo „Bez zmiany".
-
-Klatki na sekundę — np. 30 albo „Bez zmiany".
-
-Opcje dodatkowe:
-
-„Kopiuj strumienie bez rekompresji" — najszybciej, ale zmienia tylko kontener.
-
-„MP4: szybki start" — dobra dla plików publikowanych w internecie.
-
-„Usuń audio", „Usuń wideo" — np. do wyciągania obrazu.
-
-Wybierz Katalog docelowy.
-
-Kliknij Uruchom.
-
-Wynik: pliki pojawią się w katalogu docelowym z tym samym tytułem, ale nowym rozszerzeniem.
-
-5.2 Wyodrębnianie klatek I / P / B
-Cel: zapisać na dysku wszystkie klatki danego typu.
-
-Czym są klatki:
-
-I (kluczowe) — pełny obraz, podstawa GOP.
-P (predykcyjne) — zapisują różnice względem poprzednich.
-B (dwukierunkowe) — różnice względem przodu i tyłu.
-
-Drzewko → 2. Wyodrębnianie i analiza klatek → 2.1 Według typu klatki.
-
-Kliknij dwukrotnie np. Wyodrębnij wszystkie klatki I.
-
-Wybierz:
-
-Format obrazu — PNG (bezstratny) lub JPG (mniejszy).
-Jakość JPG — 1 = najlepsza, 31 = najgorsza.
-Tryb szybki (tylko dla I) — pomija dekodowanie klatek niekluczowych, przyspiesza.
-Wskaż katalog docelowy. Program utworzy w nim podkatalog o nazwie pliku wejściowego.
-Uruchom.
-
-Wynik: pliki nazwa_I_00001.png, nazwa_I_00002.png itd.
-
-5.3 Wyodrębnianie co N-tą klatkę / co N sekund
-Drzewko → 2.2 Według interwału → Co N-tą klatkę / co N sekund.
-
-Wybierz tryb:
-Co N-tą klatkę — np. N=10 oznacza co 10. klatkę.
-Co N sekund — np. N=2 oznacza co 2 sekundy.
-Ustaw N, format obrazu, katalog docelowy.
-Uruchom.
-
-5.4 Wyodrębnianie klatek z zakresu czasu
-Drzewko → 2.2 Według interwału → Z zakresu czasu (od–do).
-
-Ustaw Start i Koniec (HH:mm:ss).
-Ustaw Klatek na sekundę (np. 1 — jedna klatka na sekundę).
-Wskaż katalog, Uruchom.
-
-5.5 Pojedyncza klatka
-Drzewko → Wyodrębnij konkretną klatkę (numer/czas).
-
-Wybierz tryb:
-Według czasu — np. 00:00:05.500.
-Według numeru klatki — np. 150.
-Wskaż plik wyjściowy (PNG/JPG).
-Uruchom.
-
-5.6 Wizualizacja wektorów ruchu
-Cel: nałożyć na obraz strzałki pokazujące, jak kodowane są makrobloki w kolejnych klatkach.
-
-Drzewko → 3. Analiza makrobloków i wektorów ruchu → Wektory ruchu (codecview).
-
-Zaznacz, co ma się pojawić:
-P-klatki: predykcja w przód (pf)
-B-klatki: predykcja w przód (bf)
-B-klatki: predykcja w tył (bb)
-Wskaż plik wyjściowy (np. output.mp4).
-
-Uruchom.
-
-Uwaga: działa tylko dla kodeków, które eksportują wektory ruchu (H.264 zwykle tak, ale nie zawsze).
-
-5.7 Wizualizacja QP (zaawansowane)
-Cel: pokolorować makrobloki według wartości QP (parametr jakości).
-
-Drzewko → 2.3 Wizualizacja debugowa → Wizualizacja wartości QP (wymaga FFmpeg nightly).
-Wybierz kodek wyjściowy i CRF.
-Wskaż plik wyjściowy, Uruchom.
-Uwaga: w standardowym FFmpeg 7.1.1 ta funkcja nie zadziała — wymaga kompilacji „nightly" z czerwca 2025 roku. Jeśli nakładka się nie pojawi, to właśnie z tego powodu.
-
-5.8 Sprawdzenie informacji o pliku (ffprobe)
-Drzewko → 4. Narzędzia dodatkowe → Pokaż informacje o pliku.
-
-Wybierz plik.
-W zakładce Log pojawi się pełny raport: kodeki, bitrate, rozdzielczość, FPS, czas trwania, metadane.
-Przydatne przed wyborem operacji — pozwala zobaczyć, co jest w pliku.
-
-5.9 Edytor poleceń FFmpeg
-Cel: wpisać własne polecenie FFmpeg, także takie, którego nie ma w drzewku.
-
-Menu Narzędzia → Edytor poleceń FFmpeg (skrót Ctrl+E).
-Po lewej masz 15 gotowych szablonów. Kliknij dwukrotnie, aby wstawić do edytora.
-Możesz:
-Wstaw ścieżkę ffmpeg — dopisze pełną ścieżkę.
-Wstaw plik wejściowy… — okno wyboru.
-Wstaw plik wyjściowy… — okno zapisu.
-Kliknij Uruchom — polecenie wykona się w tle, wynik pojawi się na dole.
-
-Przykładowe szablony:
-Konwersja MP4 → MKV (kopiuj)
-Wyodrębnij klatki I/P/B
-Co 1 sekundę
-Wektory ruchu
-Zmiana rozdzielczości do 720p
-Wyciągnij audio (MP3 / bez rekompresji)
-Przytnij fragment
-Łączenie plików
-GIF z fragmentu
-
-5.10 Odtwarzacz FFplay
-Cel: podejrzeć plik lub efekt filtrów bez zapisywania.
-
-Menu Narzędzia → Odtwarzacz FFplay (skrót Ctrl+P).
-Wybierz plik.
-Opcje:
-
-Pełny ekran — tryb -fs.
-Bez ramki okna — tryb -noborder.
-Start od (sekundy) — pomiń początek.
-Filtr wideo (-vf) — np. scale=1280:720 albo codecview=mv=pf+bf+bb.
--flags2 — np. +export_mvs.
--debug — starsze opcje (zwykle już nie działają).
-Kliknij Odtwórz. Zamknięcie okna ffplay kończy odtwarzanie.
-
-5.11 Przetwarzanie wsadowe
-Cel: wykonać tę samą operację na wielu plikach jednocześnie.
-
-Menu Narzędzia → Przetwarzanie wsadowe.
-Dodaj pliki… — możesz wybrać wiele.
-Wybierz Operację:
-Konwertuj do .mp4 / .mkv / .webm
-Wyodrębnij klatki I / P / B
-Wskaż Katalog docelowy.
-Uruchom.
-
-Zadania trafią do Kolejki zadań (zakładka po prawej). Możesz je podejrzeć i uruchomić.
-
-5.12 Kolejka zadań
-Cel: wykonać wiele operacji jedna po drugiej, z możliwością pauzy.
-
-Zakładka Kolejka zadań po prawej stronie.
-
-Dodawanie zadań:
-
-Z przetwarzania wsadowego (automatycznie).
-Z menu Narzędzia → Dodaj do kolejki (bieżący log) — bierze ostatnie polecenie z Loga.
-Z wtyczek (patrz punkt 5.14).
-
-Sterowanie:
-
-▲ / ▼ — zmiana kolejności.
-Usuń / Wyczyść — usuwanie.
-Start — uruchomienie kolejki.
-Pauza / Wznów — wstrzymanie między zadaniami.
-Stop — zatrzymanie całości.
-Kolumny tabeli:
-# — numer zadania.
-Zadanie — nazwa.
-Postęp — pasek procentowy dla aktualnego zadania.
-Status — Oczekuje / W toku / OK / Błąd (kod).
-
-5.13 Profile — zapisywanie ulubionych ustawień
-Cel: zapamiętać konfigurację (ścieżki, motyw, kanał aktualizacji), aby szybko ją odtworzyć.
-
-Menu Profile → Zapisz bieżące jako profil….
-Podaj nazwę, np. Domowe PC.
-Aby wczytać: Profile → Wczytaj profil… i wybierz nazwę.
-Aby usunąć: Profile → Usuń profil….
-Profile zapisują się w ~/.ffmpeg_gui_pl/profiles/.
-
-5.14 Wtyczki — własne presety
-Cel: dodać własne operacje do drzewka (np. preset pod YouTube).
-
-Menu Narzędzia → Wtyczki i presety….
-
-Okno pokazuje:
-Zainstalowane wtyczki (wbudowane + użytkownika).
-Dostępne presety — lista gotowych operacji.
-Przyciski:
-
-Otwórz katalog wtyczek — otwiera ~/.ffmpeg_gui_pl/plugins/.
-Dodaj wtyczkę (.py)… — kopiuje plik z wtyczką.
-Wbudowane presety:
-YouTube 1080p
-Twitter/X 720p
-Instagram Reels (9:16)
-Audio MP3 320 kbps
-Audio FLAC (bezstratny)
-Wideo H.265 bardzo mały plik
-
-Jak uruchomić preset: w drzewku rozwiń 5. Wtyczki — własne presety i kliknij dwukrotnie na wybrany preset. Program zapyta o plik wejściowy i katalog docelowy, po czym doda zadanie do kolejki.
-
-5.15 Sumy kontrolne SHA-256
-Cel: zweryfikować integralność plików po operacji.
-
-Automatycznie: po każdej operacji, jeśli w Ustawieniach zaznaczono „Generuj sumy SHA-256 po operacji", program tworzy plik checksums.sha256 w katalogu wyjściowym. Format zgodny z sha256sum -c.
-Ręcznie — generowanie:
-Menu Narzędzia → Oblicz SHA-256 dla katalogu….
-Wskaż katalog.
-
-W Locie pojawi się liczba przetworzonych plików i ścieżka do checksums.sha256.
-Ręcznie — weryfikacja:
-Menu Narzędzia → Zweryfikuj checksums.sha256….
-Wskaż plik checksums.sha256.
-Program policzy sumy wszystkich plików i pokaże raport: ile OK, ile błędnych.
-
-Ręcznie z terminala:
-
-powershell
-Get-FileHash plik.mp4 -Algorithm SHA256
-5.16 Aktualizacje
-Automatyczne: przy starcie program sprawdza GitHub Releases (jeśli w Ustawieniach włączone „Sprawdzaj aktualizacje przy starcie").
-
-Ręczne:
-Menu Pomoc → Sprawdź aktualizacje….
-Jeśli jest nowsza wersja, otworzy się okno z:
-Numerem nowej wersji,
-Oczekiwaną sumą SHA-256,
-Opisem zmian.
-Kliknij Pobierz i zainstaluj.
-
-Program:
-pobierze plik,
-zweryfikuje SHA-256 — jeśli się nie zgadza, instalacja zostanie przerwana,
-zapyta o potwierdzenie,
-podmieni plik i uruchomi się ponownie.
-
-6. Zakładki po prawej
-6.1 Log
-Pełny zapis wszystkich operacji: polecenia FFmpeg, komunikaty, błędy.
-Zatrzymaj — przerwij bieżące zadanie.
-Wyczyść log — wyczyść zawartość.
-Zapisz log… — zapisz do pliku .txt.
-
-6.2 Podgląd klatek
-Miniatury obrazów wygenerowanych w katalogu.
-Wybierz katalog… — wskaż katalog z klatkami.
-Odśwież — przeładuj listę.
-Dwuklik na miniaturę — otwiera plik w systemowej przeglądarce obrazów.
-
-6.3 Kolejka zadań
-Patrz punkt 5.12.
-
-7. Typowe scenariusze
-Scenariusz 1: Konwersja filmu do mniejszego pliku
-Drzewko → Konwertuj do .mp4.
-
-Wybierz plik.
-Preset jakości: „Niska (CRF 28)".
-Rozdzielczość: 1280x720.
-Katalog docelowy, Uruchom.
-
-Scenariusz 2: Wyciągnięcie klatek do analizy
-Drzewko → Wyodrębnij wszystkie klatki I.
-Format: PNG (bezstratny, do analizy).
-Katalog docelowy, Uruchom.
-Po zakończeniu zakładka Podgląd klatek pokaże miniatury.
-
-Scenariusz 3: Wizualizacja ruchu w kodowanym wideo
-Drzewko → Wektory ruchu (codecview).
-
-Zaznacz wszystkie trzy opcje: pf, bf, bb.
-Plik wyjściowy np. analiza.mp4, Uruchom.
-Otwórz wynik w odtwarzaczu — zobaczysz strzałki ruchu.
-
-Scenariusz 4: Wiele plików — ta sama operacja
-Menu Narzędzia → Przetwarzanie wsadowe.
-
-Dodaj 10 plików.
-
-Operacja: Konwertuj do .mp4.
-Katalog docelowy, Uruchom.
-W zakładce Kolejka zadań obserwuj postęp.
-Scenariusz 5: Weryfikacja integralności nagrania
-Menu Narzędzia → Oblicz SHA-256 dla katalogu….
-Wybierz katalog z archiwum.
-Wyślij plik checksums.sha256 odbiorcy razem z plikami.
-Odbiorca: Narzędzia → Zweryfikuj checksums.sha256… i dostanie raport.
-
-8. Rozwiązywanie problemów
-Objaw	Przyczyna	Rozwiązanie
-„Nie znaleziono ffmpeg"	FFmpeg nie w PATH	Ustaw ścieżkę w Plik → Ustawienia
-Program nie startuje	Brak PyQt5	pip install PyQt5
-Brak podglądu klatek	Nie wskazano katalogu	Ustaw katalog w zakładce Podgląd klatek
-Wizualizacja QP nie działa	Standardowy FFmpeg 7.1.1	Pobierz wersję nightly
-Wizualizacja typów makrobloków nie działa	Funkcja usunięta z FFmpeg	Nie da się — użyj wektorów ruchu
-Błąd SHA-256 przy aktualizacji	Plik uszkodzony lub podmieniony	Pobierz ręcznie ze strony wydania
-Kolejka stoi w miejscu	Pauza aktywna	Kliknij „Wznów"
-
-10. Skróty klawiszowe
-Skrót	Akcja
-Ctrl+O	Otwórz plik (ffprobe)
-Ctrl+,	Ustawienia
-Ctrl+E	Edytor poleceń FFmpeg
-Ctrl+P	Odtwarzacz FFplay
-Ctrl+Q	Zakończ
-11. Gdzie program trzyma dane
-Wszystko w katalogu domowym:
-
-text
-~/.ffmpeg_gui_pl/
-├── config.json         ← ustawienia
-├── profiles/           ← zapisane profile
-│   └── *.json
-└── plugins/            ← wtyczki użytkownika
-    └── *.py
-Windows: C:\Users\UserName\.ffmpeg_gui_pl\
-Linux/macOS: ~/.ffmpeg_gui_pl/
-
-Kopiując ten katalog na inny komputer, przeniesiesz ustawienia i wtyczki (ale nie samego FFmpeg).
-
-11. Najlepsze praktyki
-Zawsze testuj nowe operacje na krótkim pliku — np. 10-sekundowym wycinku, zanim puścisz na cały film.
-Nie używaj -c copy do zmiany kodeka — kopiowanie tylko przenosi strumienie, nie konwertuje.
-CRF to nie to samo co bitrate — CRF to tryb stałej jakości (0 = bezstratny, 51 = najgorszy). 18–23 to dobry zakres.
-Przy wyodrębnianiu klatek I używaj trybu szybkiego — pomija dekodowanie pozostałych klatek i przyspiesza kilkukrotnie.
-Do archiwizacji używaj PNG — JPG traci dane przy każdej operacji.
-Regularnie sprawdzaj aktualizacje — FFmpeg co kilka miesięcy zmienia opcje.
-Zapisuj profile — jeśli używasz programu na kilku komputerach, zapisz config i skopiuj na drugi.
+```
+ffmpeg-gui-pl/
+├── dialogs/             # Okna dialogowe dla różnych operacji
+│   ├── __init__.py
+│   ├── base.py          # Bazowa klasa okna dialogowego
+│   ├── batch.py         # Przetwarzanie wsadowe
+│   ├── command_editor.py # Edytor poleceń FFmpeg
+│   ├── convert.py       # Konwersja formatów
+│   ├── debug_vis.py     # Wizualizacje debugowe (QP, wektory ruchu)
+│   ├── frame_extract.py # Wyodrębnianie klatek
+│   ├── play_dialog.py   # Odtwarzacz FFplay
+│   ├── plugins_dialog.py # Zarządzanie wtyczkami
+│   └── update_dialog.py # Okno aktualizacji
+├── installer/
+│   └── ffmpeg_gui.iss   # Skrypt instalatora (Inno Setup)
+├── plugins/
+│   ├── __init__.py
+│   ├── builtin/         # Wbudowane presety wtyczek
+│   │   ├── batch_rename.py
+│   │   └── youtube_preset.py
+│   └── loader.py        # Ładowanie wtyczek
+├── __pycache__/
+├── widgets/
+│   ├── __init__.py
+│   ├── frame_preview.py # Podgląd klatek
+│   ├── job_queue_widget.py # Widżet kolejki zadań
+│   └── progress_bar.py  # Pasek postępu
+├── config.py            # Zarządzanie konfiguracją aplikacji
+├── checksum.py          # Obliczanie i weryfikacja sum SHA-256
+├── ffmpeg_gui.iss       # Skrypt instalatora Inno Setup (duplikat?)
+├── ffmpeg_runner.py     # Uruchamianie FFmpeg w osobnym wątku
+├── ffplay_runner.py     # Uruchamianie FFplay w osobnym wątku
+├── job_queue.py         # Logika kolejki zadań
+├── main.py              # Główny punkt wejścia aplikacji
+├── presets.py           # Definicje presetów jakości, kodeków itp.
+├── requirements.txt     # Zależności projektu
+├── settings_dialog.py   # Okno ustawień programu
+├── struktura.txt        # (pusty plik tekstowy)
+├── theme.py             # Obsługa motywów interfejsu (QSS)
+├── updater.py           # Mechanizm autoaktualizacji
+└── version.py           # Informacje o wersji aplikacji
+```
+
+## Rozwiązywanie Problemów ❓
+
+| Objaw                                | Przyczyna                                       | Rozwiązanie                                     |
+| :----------------------------------- | :---------------------------------------------- | :---------------------------------------------- |
+| "Nie znaleziono ffmpeg"            | FFmpeg nie jest w systemowej zmiennej PATH     | Ustaw ścieżkę w `Plik -> Ustawienia`            |
+| Program nie startuje                 | Brak zainstalowanej biblioteki PyQt5           | `pip install PyQt5`                             |
+| Brak podglądu klatek                 | Nie wskazano katalogu z klatkami                | Ustaw katalog w zakładce `Podgląd klatek`       |
+| Wizualizacja QP nie działa           | Używana jest standardowa wersja FFmpeg          | Pobierz wersję `nightly` z czerwca 2025.         |
+| Wizualizacja makrobloków nie działa  | Funkcja usunięta z nowszych wersji FFmpeg       | Użyj `Wektory ruchu (codecview)`                |
+| Błąd SHA-256 przy aktualizacji       | Plik aktualizacji uszkodzony lub podmieniony    | Pobierz ręcznie ze strony wydania GitHub       |
+| Kolejka zadań stoi w miejscu         | Aktywna pauza między zadaniami                   | Kliknij przycisk `Wznów`                        |
+
+## Skróty Klawiszowe ⌨️
+
+*   `Ctrl+O`: Otwórz plik (ffprobe)
+*   `Ctrl+,`: Ustawienia programu
+*   `Ctrl+E`: Edytor poleceń FFmpeg
+*   `Ctrl+P`: Odtwarzacz FFplay
+*   `Ctrl+Q`: Zakończ program
+
+## Informacje o Danych 💾
+
+Wszystkie dane konfiguracyjne, profile użytkownika i wtyczki są przechowywane w katalogu domowym użytkownika:
+
+*   **Windows:** `C:\Users\<NazwaUżytkownika>\.ffmpeg_gui_pl\`
+*   **Linux/macOS:** `~/.ffmpeg_gui_pl/`
+
+Katalog ten zawiera:
+
+*   `config.json`: Ustawienia programu.
+*   `profiles/`: Zapisane profile użytkownika.
+*   `plugins/`: Niestandardowe wtyczki dodane przez użytkownika.
+
+Kopiowanie tego katalogu na inny komputer pozwala przenieść ustawienia i wtyczki (ale nie samego FFmpeg).
+
+## Najlepsze Praktyki ✨
+
+*   **Testuj na krótkich fragmentach:** Przed wykonaniem operacji na długich plikach, zawsze testuj ustawienia na krótkim wycinku.
+*   **Unikaj `-c copy` do zmiany kodeka:** Opcja `-c copy` kopiuje strumienie bez rekompresji, zmieniając jedynie kontener. Nie służy do zmiany kodeka.
+*   **Zrozum CRF:** CRF (Constant Rate Factor) to parametr jakości, a nie bitrate. Niższa wartość oznacza lepszą jakość (i większy plik), wyższa – gorszą jakość (i mniejszy plik). Zakres 18-23 jest zazwyczaj dobrym kompromisem.
+*   **Wykorzystaj tryb szybki:** Przy wyodrębnianiu klatek I, używaj trybu szybkiego (`-skip_frame nokey`), aby znacząco przyspieszyć proces.
+*   **Archiwizacja w PNG:** Do celów archiwalnych i analizy preferuj format PNG, ponieważ JPG jest formatem stratnym.
+*   **Regularne aktualizacje:** FFmpeg jest aktywnie rozwijany. Aktualizuj program i narzędzia FFmpeg, aby korzystać z najnowszych funkcji i poprawek.
+*   **Zapisuj profile:** Używaj profili, aby łatwo przenosić konfigurację między różnymi maszynami lub przywracać ustawienia po reinstalacji.
+
+## Przyczyniający się 🧑‍💻
+
+Chcesz pomóc w rozwoju? Zapoznaj się z [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Licencja 📄
+
+Ten projekt jest licencjonowany na licencji [MIT](LICENSE).
+
+## Ważne Linki 🔗
+
+*   [Strona projektu FFmpeg](https://ffmpeg.org/)
+*   [Repozytorium FFmpeg GUI PL](https://github.com/M00r/ffmpeg-gui-pl)
+
+--- 
+
+*Repozytorium: `ffmpeg-gui-pl`*
+*Autor: M00r*
+*URL: [https://github.com/M00r/ffmpeg-gui-pl](https://github.com/M00r/ffmpeg-gui-pl)*
+
+Masz pytania? Zostaw [issue](https://github.com/M00r/ffmpeg-gui-pl/issues).
+
+Podoba Ci się projekt? Daj gwiazdkę ⭐, zasubskrybuj 🌟 i rozważ fork 🍴!
+
+---
+**<p align="center">Generated by [ReadmeCodeGen](https://www.readmecodegen.com/)</p>**
