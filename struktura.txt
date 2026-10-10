@@ -1,0 +1,44 @@
+ffmpeg_gui/
+├── main.py
+├── config.py
+├── theme.py
+├── presets.py
+├── version.py
+├── ffmpeg_runner.py
+├── ffplay_runner.py
+├── job_queue.py
+├── updater.py
+├── checksum.py
+├── settings_dialog.py
+├── build_exe.py
+├── requirements.txt
+├── ffmpeg_gui.spec
+├── icon.ico                          (opcjonalna ikona)
+├── installer/
+│   └── ffmpeg_gui.iss
+├── .github/
+│   └── workflows/
+│       └── release.yml
+├── dialogs/
+│   ├── __init__.py
+│   ├── base.py
+│   ├── convert.py
+│   ├── frame_extract.py
+│   ├── debug_vis.py
+│   ├── batch.py
+│   ├── command_editor.py
+│   ├── play_dialog.py
+│   ├── plugins_dialog.py
+│   └── update_dialog.py
+├── widgets/
+│   ├── __init__.py
+│   ├── progress_bar.py
+│   ├── frame_preview.py
+│   └── job_queue_widget.py
+└── plugins/
+    ├── __init__.py
+    ├── loader.py
+    └── builtin/
+        ├── __init__.py
+        ├── youtube_preset.py
+        └── batch_rename.py
